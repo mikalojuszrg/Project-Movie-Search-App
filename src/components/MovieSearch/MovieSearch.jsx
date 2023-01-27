@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import styles from "./MovieSearch.module.scss";
+import MovieCard from "../MovieCard/MovieCard";
 
 const MovieSearch = () => {
   const [query, setQuery] = useState("");
@@ -17,25 +18,33 @@ const MovieSearch = () => {
     }
   };
 
-  console.log(movies);
-
   return (
-    <form className={styles.form} onSubmit={getMovies}>
-      <label htmlFor="query" className={styles.form__label}>
-        Movie name
-      </label>
-      <input
-        type="text"
-        placeholder="Insert a movie name"
-        name="query"
-        className={styles.form__input}
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <button type="submit" className={styles.form__button}>
-        Search
-      </button>
-    </form>
+    <>
+      <form className={styles.form} onSubmit={getMovies}>
+        <label htmlFor="query" className={styles.form__label}>
+          Movie name
+        </label>
+        <input
+          type="text"
+          placeholder="Insert a movie name"
+          name="query"
+          className={styles.form__input}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button type="submit" className={styles.form__button}>
+          Search
+        </button>
+      </form>
+      <div className={styles["movies-list"]}>
+        {movies
+          .filter((movie) => movie.poster_path)
+          .map((movie) => {
+            console.log(movie);
+            return <MovieCard key={movie.id} {...movie} />;
+          })}
+      </div>
+    </>
   );
 };
 
